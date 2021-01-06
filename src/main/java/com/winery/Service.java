@@ -1,6 +1,7 @@
 package com.winery;
 
 import com.winery.dto.BreakdownDto;
+import com.winery.dto.DetailsDto;
 import com.winery.dto.PercentageKeyDto;
 import com.winery.dto.WineDto;
 import com.winery.model.Details;
@@ -13,12 +14,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class Service {
 
     public static BreakdownDto getBreakDownOnProperties(String lotCode, String[] properties) throws IOException, ParseException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Model model = Utililty.readFromJson(lotCode, false);
+        Model model = Utililty.readFromJson(lotCode);
         List<Method> methodList = new ArrayList<>();
 
         for(int i = 0; i < properties.length; i++) {
@@ -155,15 +157,15 @@ public class Service {
     }
 
 
-    public List<WineDto> searchWine(String lot, String description) throws IOException, ParseException, URISyntaxException {
+    public List<WineDto> searchWine(String lot, String description) throws IOException, ParseException, URISyntaxException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         List<Model> modelList = new ArrayList<>();
 
         if(lot != null){
-            Model model = Utililty.readFromJson(lot, true);
+            Model model = Utililty.readFromJson(lot);
             if(description != null && description.equals(model.getDescription())){
 
             }
-                modelList.add(model);
+            modelList.add(model);
         }
         else {
             List<Model> newModelList = Utililty.readFromAllJson();
@@ -195,8 +197,13 @@ public class Service {
             wineDto.setProductState(model.getProductState());
             wineDto.setOwner(model.getOwnerName());
 
-            wineList.add(wineDto);
+            wineDto.setDetails(model.getComponents().stream().map(component -> new DetailsDto()
+                    .percentage(component.getPercentage())
+                    .region(component.getRegion())
+                    .year(component.getYear())
+                    .variety(component.getVariety())).collect(Collectors.toList()));
 
+            wineList.add(wineDto);
         }
 
 

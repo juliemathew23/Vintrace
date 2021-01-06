@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/")
+@CrossOrigin
 public class Controller {
 
     @Autowired
@@ -39,7 +40,7 @@ public class Controller {
     }
 
     @GetMapping("search")
-    public List<WineDto> searchWine(@RequestParam(required = false, name = "lot") String lot, @RequestParam(required = false, name = "description") String description) throws ParseException, IOException, URISyntaxException {
+    public List<WineDto> searchWine(@RequestParam(required = false, name = "lot") String lot, @RequestParam(required = false, name = "description") String description) throws ParseException, IOException, URISyntaxException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         return service.searchWine(lot, description);
     }
 }

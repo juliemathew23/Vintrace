@@ -1,5 +1,7 @@
 package com.winery.dto;
 
+import java.util.List;
+
 public class WineDto {
 
     private String lotCode;
@@ -13,6 +15,8 @@ public class WineDto {
     private String productState;
 
     private String owner;
+
+    private List<DetailsDto> details;
 
     public String getLotCode() {
         return lotCode;
@@ -60,5 +64,13 @@ public class WineDto {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public List<DetailsDto> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<DetailsDto> details) {
+        this.details = details;
     }
 }

@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 
 public class Utililty {
 
-    public static Model readFromJson(String fileName, boolean searchFlag) throws IOException, ParseException {
+    public static Model readFromJson(String fileName) throws IOException, ParseException {
         ClassLoader classLoader = Utililty.class.getClassLoader();
         File file = new File(classLoader.getResource(fileName +".json").getFile());
 
@@ -32,15 +32,15 @@ public class Utililty {
         Model model = new Model();
         model.setLotCode(String.valueOf(jsonObject.get("lotCode")));
 
-        if(searchFlag) {
+        //if(searchFlag) {
             model.setDescription(String.valueOf(jsonObject.get("description")));
             model.setVolume(String.valueOf(jsonObject.get("volume")));
             model.setTankCode(String.valueOf(jsonObject.get("tankCode")));
             model.setProductState(String.valueOf(jsonObject.get("productState")));
             model.setOwnerName(String.valueOf(jsonObject.get("ownerName")));
-        }
+        //}
 
-        else {
+        //else {
             List<Details> detailsList = new ArrayList<>();
 
             JSONArray components = (JSONArray) jsonObject.get("components");
@@ -58,7 +58,7 @@ public class Utililty {
             }
 
             model.setComponents(detailsList);
-        }
+        //}
 
         return model;
     }
@@ -68,7 +68,7 @@ public class Utililty {
         List<String> lokNameList = getResourceFolderFiles();
 
         for(String lokName: lokNameList){
-            modelList.add(readFromJson(lokName, true));
+            modelList.add(readFromJson(lokName));
         }
 
         return modelList;
